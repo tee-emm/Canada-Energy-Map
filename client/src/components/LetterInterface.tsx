@@ -10,15 +10,18 @@ interface LetterInterfaceProps {
   letter: Letter;
   onChoice: (choice: Choice) => void;
   onWalletDecision: (option: any) => void;
-  onComplete: () => void;
+  onComplete: (nextId?: string) => void;
   regionName: string;
 }
 
 export function LetterInterface({ letter, onChoice, onWalletDecision, onComplete, regionName }: LetterInterfaceProps) {
   const [phase, setPhase] = useState<'reading' | 'choices' | 'wallet' | 'done'>('reading');
+  const [selectedNextId, setSelectedNextId] = useState<string | undefined>(undefined);
 
   const handleChoice = (c: Choice) => {
     onChoice(c);
+    setSelectedNextId(c.nextId);
+    
     if (letter.walletEvent) {
       setPhase('wallet');
     } else {
@@ -34,6 +37,7 @@ export function LetterInterface({ letter, onChoice, onWalletDecision, onComplete
   return (
     <div className="relative w-full max-w-2xl mx-auto h-full flex flex-col justify-center p-4 md:p-8">
       <motion.div 
+        key={letter.id} // Important for re-animating when letter changes
         initial={{ opacity: 0, scale: 0.95, rotate: -1 }}
         animate={{ opacity: 1, scale: 1, rotate: 0 }}
         transition={{ duration: 0.6, type: 'spring' }}
@@ -101,10 +105,14 @@ export function LetterInterface({ letter, onChoice, onWalletDecision, onComplete
                 className="flex flex-col items-center justify-center gap-4 py-8"
               >
                  <div className="w-16 h-16 bg-slate-800 text-white rounded-full flex items-center justify-center text-2xl mb-2">
-                   ✓
+                   {selectedNextId ? '→' : '✓'}
                  </div>
-                 <p className="font-serif italic text-slate-600">Response Sent</p>
-                 <Button onClick={onComplete} className="w-full max-w-xs">Return to Map</Button>
+                 <p className="font-serif italic text-slate-600">
+                   {selectedNextId ? 'Waiting for reply...' : 'Chapter Complete'}
+                 </p>
+                 <Button onClick={() => onComplete(selectedNextId)} className="w-full max-w-xs">
+                   {selectedNextId ? 'Continue' : 'Return to Map'}
+                 </Button>
               </motion.div>
             )}
           </AnimatePresence>

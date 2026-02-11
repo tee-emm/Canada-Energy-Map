@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 export default function Home() {
   const [view, setView] = useState<'map' | 'letter' | 'summary'>('map');
   const [currentRegion, setCurrentRegion] = useState<Region | null>(null);
+  const [currentLetterId, setCurrentLetterId] = useState<string | null>(null);
   const [completedRegions, setCompletedRegions] = useState<RegionId[]>([]);
   
   const [stats, setStats] = useState({
@@ -20,6 +21,8 @@ export default function Home() {
 
   const handleSelectRegion = (region: Region) => {
     setCurrentRegion(region);
+    // Automatically select the first letter of the region
+    setCurrentLetterId(region.letters[0].id);
     setView('letter');
   };
 
@@ -32,7 +35,17 @@ export default function Home() {
     }));
   };
 
-  const handleLetterComplete = () => {
+  const handleLetterStepComplete = (nextId?: string) => {
+    if (nextId) {
+       // Proceed to next letter in the chain
+       setCurrentLetterId(nextId);
+    } else {
+       // Region complete
+       handleRegionComplete();
+    }
+  };
+
+  const handleRegionComplete = () => {
     if (currentRegion) {
       const newCompleted = Array.from(new Set([...completedRegions, currentRegion.id]));
       setCompletedRegions(newCompleted);
@@ -44,7 +57,16 @@ export default function Home() {
       }
     }
     setCurrentRegion(null);
+    setCurrentLetterId(null);
   };
+
+  // Helper to find current letter object
+  const getCurrentLetter = () => {
+    if (!currentRegion || !currentLetterId) return null;
+    return currentRegion.letters.find(l => l.id === currentLetterId);
+  };
+
+  const currentLetter = getCurrentLetter();
 
   return (
     <div className="h-screen w-screen bg-slate-950 text-slate-100 flex flex-col overflow-hidden font-sans">
@@ -82,7 +104,7 @@ export default function Home() {
             </motion.div>
           )}
 
-          {view === 'letter' && currentRegion && (
+          {view === 'letter' && currentRegion && currentLetter && (
             <motion.div 
               key="letter"
               initial={{ opacity: 0, y: 50 }}
@@ -91,12 +113,14 @@ export default function Home() {
               className="absolute inset-0 z-20 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
             >
               <div className="w-full max-w-4xl pt-20 pb-10">
+                 {/* Key forces remount on letter change for animation */}
                  <LetterInterface 
-                   letter={currentRegion.letters[0]}
+                   key={currentLetter.id}
+                   letter={currentLetter}
                    regionName={currentRegion.name}
                    onChoice={(c) => updateStats(c.impact)}
                    onWalletDecision={(opt) => updateStats(opt.impact)}
-                   onComplete={handleLetterComplete}
+                   onComplete={handleLetterStepComplete}
                  />
               </div>
             </motion.div>
