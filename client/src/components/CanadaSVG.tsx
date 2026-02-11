@@ -15,7 +15,7 @@ export function CanadaSVG({ className, onLoad }: CanadaSVGProps) {
         let cleaned = text
           .replace(/fill="[^"]*"/, 'fill="none"')
           .replace(/stroke="[^"]*"/, 'stroke="rgba(100,200,255,0.35)"')
-          .replace(/stroke-width="[^"]*"/, 'stroke-width="0.4"')
+          .replace(/stroke-width="[^"]*"/, 'stroke-width="0.5"')
           .replace(/width="1000"/, 'width="100%"')
           .replace(/height="1000"/, 'height="100%"')
           .replace(/viewbox=/i, 'viewBox=');
@@ -25,7 +25,7 @@ export function CanadaSVG({ className, onLoad }: CanadaSVGProps) {
 
         cleaned = cleaned.replace(
           /<path\s/g,
-          '<path fill="rgba(100,200,255,0.04)" '
+          '<path fill="rgba(100,200,255,0.06)" '
         );
 
         setSvgContent(cleaned);
