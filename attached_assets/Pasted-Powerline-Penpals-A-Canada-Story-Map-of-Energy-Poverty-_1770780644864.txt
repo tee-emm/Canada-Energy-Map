@@ -1,0 +1,128 @@
+Powerline Penpals: A Canada Story Map of Energy Poverty
+
+Format: Interactive story-map (web app) where each region is a “chapter” told through letters, with branching responses, a mini budget-tradeoff tool, and a shared impact meter that visualizes what you prioritized.
+
+You’re essentially building a playable anthology: four to six short narrative experiences that are different, but connected by the same UI language and decision system.
+
+The core loop
+1) Choose a region on a stylized map of Canada
+
+The map starts “cold” and muted.
+
+Regions glow as you complete stories (or based on how stable/unstable your outcomes were).
+
+2) Read a letter from a character in that region
+
+You can keep the writing tight: 250–500 words per letter.
+
+Each region has 2–3 letters that progress over time (early winter → deep winter → end-of-month).
+
+3) Respond + act (branching)
+
+Each letter gives you 2–3 decision layers:
+
+Tone choice (empathy / practical / skeptical) → affects trust + how much the character shares next.
+
+Action choice (what help is realistic) → affects the impact meter.
+
+One follow-up question (what you want to learn) → unlocks a “context card” (costs, reliability, landlord control, etc.) without turning it into a lecture.
+
+4) Make a Warmth Wallet micro-decision (budget simulator)
+
+After the response, you get a small “money & energy reality” moment:
+
+You have $X or Y kWh or “2 outage days”
+
+You must pick tradeoffs (heat vs groceries vs transit vs phone data vs medication storage)
+
+This changes the meter and modifies the next letter.
+
+5) End-of-region summary + “stamp” on the map
+
+You see:
+
+What you prioritized (e.g., Safety > Affordability > Agency > Comfort)
+
+A short reflection line from the character (based on your choices)
+
+A “regional stamp” is added to your passport (collectible UI moment)
+
+Your “Impact Meter” (the thing that makes it feel like an app)
+
+Use 4 axes so it’s easy to understand and visually satisfying:
+
+Warmth & Health (physical safety, heat, medical needs)
+
+Reliability (outages, predictability, preparedness)
+
+Affordability (bill stability, debt spiral risk)
+
+Agency (control, dignity, ability to choose & advocate)
+
+Design idea: the meter is a little thermometer/compass widget that subtly animates after each choice, and the map heat overlay changes too (your “Heat Map Stories” layer).
+
+Region chapters (how to combine your 4 perspectives + make it feel pan-Canadian)
+
+You can do 4 regions (simpler) or 6 regions (more map-y). Here’s a 4-chapter version that covers diverse realities without feeling like a textbook:
+
+Chapter A — The North (Reliability)
+
+Character: Teen in a remote community dealing with outages + limited options.
+Signature mechanic twist: “Outage Events” interrupt the letter (screen flicker, offline mode UI).
+Warmth Wallet prompt: “Food safety vs phone data vs backup power.”
+
+Chapter B — Big City (Housing control)
+
+Character: Urban renter in a drafty building with unpredictable heat and confusing charges.
+Twist: “Landlord Constraint” tag appears on choices—some actions are blocked unless you build community leverage.
+Warmth Wallet: “Pay bill / buy space heater / transit to work / groceries.”
+
+Chapter C — Rural (Seasonal spikes)
+
+Character: Senior on fixed income facing winter heating volatility and isolation.
+Twist: “Pride & Independence” trust mechanic—too pushy too soon reduces sharing.
+Warmth Wallet: “Heat one room / refill tank / medical appointment travel.”
+
+Chapter D — Medically dependent household (Power = survival)
+
+Character: Caregiver managing devices/med storage where outages are emergencies.
+Twist: Preparedness builder—your choices assemble a small “go-bag” checklist UI.
+Warmth Wallet: “Battery backup / groceries / rent / medication cooling plan.”
+
+If you want a 6-region map, you can split “Big City” into two (e.g., one about newcomers + billing confusion, one about high-rise landlord issues), and split “Rural” into “Prairies winter” vs “Atlantic older housing stock.”
+
+The “letters” presentation (graphic design gold)
+
+Make each region feel distinct through stationery systems:
+
+Region-specific paper texture + stamp (but consistent layout grid)
+
+Tiny icon language per region (snowflake, apartment key, fuel gauge, medical cross)
+
+A “postmark date” for each letter (“Week 1 / Week 3 / Week 4”)
+
+Optional: faint “map coordinates” watermark behind the text for cohesion
+
+This is where your writing + art direction shines without needing huge illustrations.
+
+Interaction + UX details that make it feel premium
+
+Branch preview dots (subtle): show there are other paths without spoiling outcomes.
+
+Trust meter is hidden until letter 2 (nice reveal).
+
+Glossary tooltips are optional (“what is a delivery surcharge?”, “what is an outage alert?”) so it stays approachable.
+
+Accessibility-first: keyboard navigation, reduced motion toggle, high-contrast mode, readable typography.
+
+Ending summary (your “thesis page”)
+
+After completing all regions:
+
+A single “What you prioritized across Canada” dashboard
+
+A map showing where outcomes were strongest/weakest
+
+A short closing “letter to you” that changes based on your meter profile (this is super memorable)
+
+Optional but powerful: a “Send a reply” final screen where the user writes 2–3 sentences (stored locally). That turns it into participation rather than consumption.
