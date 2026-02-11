@@ -5,9 +5,10 @@ import { LetterInterface } from '@/components/LetterInterface';
 import { ImpactMeter } from '@/components/ImpactMeter';
 import { Region, STORIES, RegionId } from '@/lib/story-data';
 import { Button } from '@/components/ui/button';
+import canadaMap from '../assets/canada-map.png';
 
 export default function Home() {
-  const [view, setView] = useState<'map' | 'letter' | 'summary'>('map');
+  const [view, setView] = useState<'intro' | 'map' | 'letter' | 'summary'>('intro');
   const [currentRegion, setCurrentRegion] = useState<Region | null>(null);
   const [currentLetterId, setCurrentLetterId] = useState<string | null>(null);
   const [completedRegions, setCompletedRegions] = useState<RegionId[]>([]);
@@ -72,7 +73,7 @@ export default function Home() {
     <div className="h-screen w-screen bg-slate-950 text-slate-100 flex flex-col overflow-hidden font-sans">
       {/* Header / Nav */}
       <header className="fixed top-0 left-0 right-0 z-50 p-6 flex justify-between items-start pointer-events-none">
-        <div className="pointer-events-auto">
+        <div className="pointer-events-auto transition-opacity duration-500" style={{ opacity: view === 'intro' ? 0 : 1 }}>
           <h1 className="text-2xl font-serif font-bold tracking-tight text-white flex items-center gap-2">
             <span className="text-accent text-3xl">⚡</span>
             Powerline Penpals
@@ -80,7 +81,7 @@ export default function Home() {
           <p className="text-slate-400 text-xs uppercase tracking-widest mt-1">A Canada Story Map of Energy Poverty</p>
         </div>
         
-        <div className="pointer-events-auto transition-opacity duration-500" style={{ opacity: view === 'summary' ? 0 : 1 }}>
+        <div className="pointer-events-auto transition-opacity duration-500" style={{ opacity: (view === 'summary' || view === 'intro') ? 0 : 1 }}>
            <ImpactMeter stats={stats} compact={true} className="w-64" />
         </div>
       </header>
@@ -88,6 +89,60 @@ export default function Home() {
       {/* Main Content Area */}
       <main className="flex-1 relative">
         <AnimatePresence mode="wait">
+          {view === 'intro' && (
+             <motion.div
+               key="intro"
+               initial={{ opacity: 0 }}
+               animate={{ opacity: 1 }}
+               exit={{ opacity: 0, scale: 1.1, filter: 'blur(10px)' }}
+               transition={{ duration: 1.2 }}
+               className="relative w-full h-full flex items-center justify-center bg-slate-950"
+             >
+                {/* Background Video/Image Parallax Effect */}
+                <div className="absolute inset-0 z-0 opacity-40 scale-105 animate-pulse-slow">
+                   <img src={canadaMap} className="w-full h-full object-cover blur-sm" alt="Background Map" />
+                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent" />
+                </div>
+
+                <div className="relative z-10 max-w-2xl text-center space-y-8 p-8">
+                   <motion.div
+                     initial={{ y: 20, opacity: 0 }}
+                     animate={{ y: 0, opacity: 1 }}
+                     transition={{ delay: 0.5, duration: 0.8 }}
+                   >
+                     <h1 className="text-6xl md:text-8xl font-serif font-bold tracking-tighter text-white mb-4 drop-shadow-2xl">
+                       Powerline<br/><span className="text-accent italic">Penpals</span>
+                     </h1>
+                     <div className="h-1 w-24 bg-accent mx-auto mb-6 rounded-full" />
+                   </motion.div>
+
+                   <motion.p 
+                     className="text-xl md:text-2xl text-slate-300 font-light leading-relaxed max-w-lg mx-auto"
+                     initial={{ y: 20, opacity: 0 }}
+                     animate={{ y: 0, opacity: 1 }}
+                     transition={{ delay: 0.8, duration: 0.8 }}
+                   >
+                     When the grid fails, choices are all we have left.
+                     <br/><span className="text-sm text-slate-500 mt-4 block uppercase tracking-widest">An interactive anthology of energy poverty in Canada</span>
+                   </motion.p>
+
+                   <motion.div
+                     initial={{ y: 20, opacity: 0 }}
+                     animate={{ y: 0, opacity: 1 }}
+                     transition={{ delay: 1.5, duration: 0.8 }}
+                   >
+                     <Button 
+                       size="lg" 
+                       className="text-lg px-12 py-8 rounded-full bg-white text-slate-900 hover:bg-accent hover:text-white transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(255,200,100,0.5)]"
+                       onClick={() => setView('map')}
+                     >
+                       Begin Journey
+                     </Button>
+                   </motion.div>
+                </div>
+             </motion.div>
+          )}
+
           {view === 'map' && (
             <motion.div 
               key="map"
@@ -185,7 +240,7 @@ export default function Home() {
       {/* Footer Status */}
       <footer className="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent pointer-events-none flex justify-between items-end text-xs text-slate-500">
         <div>
-           {view !== 'summary' && `Regions explored: ${completedRegions.length} / ${Object.keys(STORIES).length}`}
+           {(view !== 'summary' && view !== 'intro') && `Regions explored: ${completedRegions.length} / ${Object.keys(STORIES).length}`}
         </div>
       </footer>
     </div>
