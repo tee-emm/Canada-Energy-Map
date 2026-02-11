@@ -10,15 +10,12 @@ interface MapControllerProps {
 
 export function MapController({ onSelectRegion, completedRegions }: MapControllerProps) {
   return (
-    <div className="relative w-full h-full bg-slate-950 overflow-hidden">
+    <div className="relative w-full h-full bg-slate-950 overflow-hidden flex items-center justify-center">
        <div
-         className="absolute"
+         className="relative"
          style={{
-           width: '130vw',
-           height: '130vw',
-           left: '50%',
-           top: '50%',
-           transform: 'translate(-50%, -62%)',
+           width: 'min(90vw, 90vh)',
+           height: 'min(90vw, 90vh)',
          }}
        >
           <div className="absolute inset-0 z-0 opacity-90">
@@ -76,7 +73,11 @@ export function MapController({ onSelectRegion, completedRegions }: MapControlle
           })}
        </div>
 
-       <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/40 pointer-events-none z-[1]" />
+       <div className="absolute inset-0 pointer-events-none z-[1]"
+         style={{
+           background: 'radial-gradient(ellipse 80% 80% at 50% 50%, transparent 50%, rgb(2 6 23) 100%)',
+         }}
+       />
        
        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/50 text-sm font-light z-20 text-center">
           <p data-testid="text-map-instructions">Select a glowing region to begin a chapter.</p>
