@@ -116,6 +116,26 @@ export default function Home() {
                      <div className="h-1 w-24 bg-accent mx-auto mb-6 rounded-full" />
                    </motion.div>
 
+                   <motion.div
+                     className="grid grid-cols-3 gap-4 max-w-lg mx-auto mb-8 text-xs md:text-sm text-slate-400 font-mono tracking-wide"
+                     initial={{ opacity: 0 }}
+                     animate={{ opacity: 1 }}
+                     transition={{ delay: 0.7, duration: 0.8 }}
+                   >
+                      <div className="flex flex-col items-center gap-2">
+                         <span className="w-8 h-8 rounded-full border border-slate-600 flex items-center justify-center text-accent">1</span>
+                         <span>Select Region</span>
+                      </div>
+                      <div className="flex flex-col items-center gap-2">
+                         <span className="w-8 h-8 rounded-full border border-slate-600 flex items-center justify-center text-accent">2</span>
+                         <span>Make Choices</span>
+                      </div>
+                      <div className="flex flex-col items-center gap-2">
+                         <span className="w-8 h-8 rounded-full border border-slate-600 flex items-center justify-center text-accent">3</span>
+                         <span>Balance Impact</span>
+                      </div>
+                   </motion.div>
+
                    <motion.p 
                      className="text-xl md:text-2xl text-slate-300 font-light leading-relaxed max-w-lg mx-auto"
                      initial={{ y: 20, opacity: 0 }}
