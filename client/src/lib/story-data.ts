@@ -47,7 +47,7 @@ export const STORIES: Record<RegionId, Region> = {
   north: {
     id: 'north',
     name: 'The North',
-    coordinates: { top: '25%', left: '35%' },
+    coordinates: { top: '66.3%', left: '19.3%' },
     themeColor: 'var(--color-primary)',
     letters: [
       // BEAT 1: INTRO
@@ -193,7 +193,7 @@ export const STORIES: Record<RegionId, Region> = {
   city: {
     id: 'city',
     name: 'Big City',
-    coordinates: { top: '75%', left: '68%' },
+    coordinates: { top: '82.8%', left: '56.4%' },
     themeColor: 'var(--color-accent)',
     letters: [
       {
@@ -325,7 +325,7 @@ export const STORIES: Record<RegionId, Region> = {
   rural: {
     id: 'rural',
     name: 'Rural',
-    coordinates: { top: '65%', left: '20%' }, // Prairies/West
+    coordinates: { top: '80.2%', left: '42.8%' },
     themeColor: 'var(--color-chart-3)',
     letters: [
       {
@@ -433,7 +433,7 @@ export const STORIES: Record<RegionId, Region> = {
   medical: {
     id: 'medical',
     name: 'Atlantic',
-    coordinates: { top: '70%', left: '85%' },
+    coordinates: { top: '90.1%', left: '74.0%' },
     themeColor: 'var(--color-chart-4)',
     letters: [
       {
