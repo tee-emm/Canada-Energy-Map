@@ -5,7 +5,7 @@ import { LetterInterface } from '@/components/LetterInterface';
 import { ImpactMeter } from '@/components/ImpactMeter';
 import { Region, STORIES, RegionId } from '@/lib/story-data';
 import { Button } from '@/components/ui/button';
-import canadaMap from '../assets/canada-map.png';
+import { CanadaSVG } from '@/components/CanadaSVG';
 
 export default function Home() {
   const [view, setView] = useState<'intro' | 'map' | 'letter' | 'summary'>('intro');
@@ -98,9 +98,8 @@ export default function Home() {
                transition={{ duration: 1.2 }}
                className="relative w-full h-full flex items-center justify-center bg-slate-950"
              >
-                {/* Background Video/Image Parallax Effect */}
-                <div className="absolute inset-0 z-0 opacity-40 scale-105 animate-pulse-slow">
-                   <img src={canadaMap} className="w-full h-full object-cover blur-sm" alt="Background Map" />
+                <div className="absolute inset-0 z-0 opacity-30 flex items-center justify-center">
+                   <CanadaSVG className="w-[80%] h-[80%] max-w-[900px] blur-[2px]" />
                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent" />
                 </div>
 

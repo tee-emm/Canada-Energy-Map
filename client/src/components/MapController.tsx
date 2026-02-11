@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React from 'react';
+import { motion } from 'framer-motion';
 import { Region, RegionId, STORIES } from '@/lib/story-data';
 import { cn } from '@/lib/utils';
-import canadaMap from '../assets/canada-map.png';
+import { CanadaSVG } from './CanadaSVG';
 
 interface MapControllerProps {
   onSelectRegion: (region: Region) => void;
@@ -10,22 +10,13 @@ interface MapControllerProps {
 }
 
 export function MapController({ onSelectRegion, completedRegions }: MapControllerProps) {
-  // We use the image generated in Batch 1 as a background
-  // and overlay invisible interactive zones
-  
   return (
     <div className="relative w-full h-full min-h-[600px] bg-slate-950 overflow-hidden flex items-center justify-center">
-       {/* Background Map Image */}
-       <div className="absolute inset-0 z-0 opacity-80">
-          <img 
-            src={canadaMap}
-            alt="Canada Map" 
-            className="w-full h-full object-cover"
-          />
+       <div className="absolute inset-0 z-0 flex items-center justify-center opacity-90">
+          <CanadaSVG className="w-[90%] h-[90%] max-w-[1200px]" />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/50" />
        </div>
 
-       {/* Floating Interactive Nodes */}
        {Object.values(STORIES).map((region) => {
          const isCompleted = completedRegions.includes(region.id);
          
@@ -39,7 +30,6 @@ export function MapController({ onSelectRegion, completedRegions }: MapControlle
              whileTap={{ scale: 0.95 }}
            >
              <div className="relative flex flex-col items-center">
-                {/* The glowing marker */}
                 <div className={cn(
                   "w-6 h-6 rounded-full border-2 transition-all duration-500 flex items-center justify-center shadow-[0_0_15px_currentColor]",
                   isCompleted 
@@ -51,7 +41,6 @@ export function MapController({ onSelectRegion, completedRegions }: MapControlle
                   {isCompleted && <span className="text-xs">✓</span>}
                 </div>
                 
-                {/* Pulse effect for unvisited */}
                 {!isCompleted && (
                   <div 
                     className="absolute inset-0 rounded-full animate-ping opacity-75"
@@ -59,7 +48,6 @@ export function MapController({ onSelectRegion, completedRegions }: MapControlle
                   />
                 )}
 
-                {/* Label */}
                 <span className="mt-2 text-xs font-bold uppercase tracking-widest text-white/80 bg-black/50 px-2 py-1 rounded backdrop-blur-sm group-hover:text-white transition-colors border border-transparent group-hover:border-white/20">
                   {region.name}
                 </span>
