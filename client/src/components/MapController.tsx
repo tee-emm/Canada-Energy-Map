@@ -156,6 +156,11 @@ export function MapController({ onSelectRegion, completedRegions }: MapControlle
                       {persona.challenge}
                     </p>
 
+                    <div className="flex items-center gap-2 mb-3 bg-white/5 rounded-lg px-3 py-2">
+                      <span className="text-[10px] uppercase tracking-widest text-slate-500">Budget</span>
+                      <span className="font-mono text-sm font-bold text-emerald-400">${region.budget}</span>
+                    </div>
+
                     <div className="border-t border-white/10 pt-3">
                       <p className="text-xs italic text-slate-400 font-serif leading-relaxed">
                         "{persona.quote}"

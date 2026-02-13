@@ -7,11 +7,19 @@ import { Region, STORIES, RegionId } from '@/lib/story-data';
 import { Button } from '@/components/ui/button';
 import { CanadaSVG } from '@/components/CanadaSVG';
 
+const initialBudgets: Record<RegionId, number> = {
+  north: STORIES.north.budget,
+  city: STORIES.city.budget,
+  rural: STORIES.rural.budget,
+  medical: STORIES.medical.budget,
+};
+
 export default function Home() {
   const [view, setView] = useState<'intro' | 'map' | 'letter' | 'summary'>('intro');
   const [currentRegion, setCurrentRegion] = useState<Region | null>(null);
   const [currentLetterId, setCurrentLetterId] = useState<string | null>(null);
   const [completedRegions, setCompletedRegions] = useState<RegionId[]>([]);
+  const [budgets, setBudgets] = useState<Record<RegionId, number>>(initialBudgets);
   
   const [stats, setStats] = useState({
     warmth: 0,
@@ -22,7 +30,6 @@ export default function Home() {
 
   const handleSelectRegion = (region: Region) => {
     setCurrentRegion(region);
-    // Automatically select the first letter of the region
     setCurrentLetterId(region.letters[0].id);
     setView('letter');
   };
@@ -36,12 +43,18 @@ export default function Home() {
     }));
   };
 
+  const spendBudget = (cost: number) => {
+    if (!currentRegion) return;
+    setBudgets(prev => ({
+      ...prev,
+      [currentRegion.id]: Math.max(0, prev[currentRegion.id] - cost),
+    }));
+  };
+
   const handleLetterStepComplete = (nextId?: string) => {
     if (nextId) {
-       // Proceed to next letter in the chain
        setCurrentLetterId(nextId);
     } else {
-       // Region complete
        handleRegionComplete();
     }
   };
@@ -61,17 +74,16 @@ export default function Home() {
     setCurrentLetterId(null);
   };
 
-  // Helper to find current letter object
   const getCurrentLetter = () => {
     if (!currentRegion || !currentLetterId) return null;
     return currentRegion.letters.find(l => l.id === currentLetterId);
   };
 
   const currentLetter = getCurrentLetter();
+  const currentBudget = currentRegion ? budgets[currentRegion.id] : 0;
 
   return (
     <div className="h-screen w-screen bg-slate-950 text-slate-100 flex flex-col overflow-hidden font-sans">
-      {/* Header / Nav */}
       <header className="fixed top-0 left-0 right-0 z-50 p-6 flex justify-between items-start pointer-events-none">
         <div className="pointer-events-auto transition-opacity duration-500" style={{ opacity: view === 'intro' ? 0 : 1 }}>
           <h1 className="text-2xl font-serif font-bold tracking-tight text-white flex items-center gap-2">
@@ -81,12 +93,11 @@ export default function Home() {
           <p className="text-slate-400 text-xs uppercase tracking-widest mt-1">A Canada Story Map of Energy Poverty</p>
         </div>
         
-        <div className="pointer-events-auto transition-opacity duration-500" style={{ opacity: (view === 'summary' || view === 'intro') ? 0 : 1 }}>
+        <div className="pointer-events-auto transition-opacity duration-500 flex items-start gap-4" style={{ opacity: (view === 'summary' || view === 'intro') ? 0 : 1 }}>
            <ImpactMeter stats={stats} compact={true} className="w-64" />
         </div>
       </header>
 
-      {/* Main Content Area */}
       <main className="flex-1 relative">
         <AnimatePresence mode="wait">
           {view === 'intro' && (
@@ -187,13 +198,20 @@ export default function Home() {
               className="absolute inset-0 z-20 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
             >
               <div className="w-full max-w-4xl pt-20 pb-10">
-                 {/* Key forces remount on letter change for animation */}
                  <LetterInterface 
                    key={currentLetter.id}
                    letter={currentLetter}
                    regionName={currentRegion.name}
-                   onChoice={(c) => updateStats(c.impact)}
-                   onWalletDecision={(opt) => updateStats(opt.impact)}
+                   budget={currentBudget}
+                   startingBudget={currentRegion.budget}
+                   onChoice={(c) => {
+                     updateStats(c.impact);
+                     spendBudget(c.cost || 0);
+                   }}
+                   onWalletDecision={(opt) => {
+                     updateStats(opt.impact);
+                     spendBudget(opt.cost || 0);
+                   }}
                    onComplete={handleLetterStepComplete}
                  />
               </div>
@@ -213,6 +231,20 @@ export default function Home() {
                     <p className="text-slate-400 text-lg leading-relaxed">
                       Across Canada, you prioritized choices that balanced <strong className="text-accent">survival</strong> with <strong className="text-primary">dignity</strong>.
                     </p>
+
+                    <div className="grid grid-cols-2 gap-3 text-sm">
+                      {Object.entries(budgets).map(([regionId, remaining]) => {
+                        const region = STORIES[regionId as RegionId];
+                        const spent = region.budget - remaining;
+                        return (
+                          <div key={regionId} className="bg-white/5 border border-white/10 rounded-lg p-3">
+                            <div className="text-xs text-slate-400 uppercase tracking-widest mb-1">{region.name}</div>
+                            <div className="font-mono text-white">${remaining} <span className="text-slate-500">left</span></div>
+                            <div className="text-xs text-red-400/70 font-mono">-${spent} spent</div>
+                          </div>
+                        );
+                      })}
+                    </div>
                     
                     <div className="py-8">
                        <ImpactMeter stats={stats} className="bg-transparent border-0 p-0" />
@@ -228,7 +260,6 @@ export default function Home() {
                     </div>
                  </div>
 
-                 {/* Passport Stamps Grid */}
                  <div className="bg-[#f7f5f0] p-8 rounded-lg rotate-2 shadow-2xl relative">
                     <div className="absolute top-0 left-0 w-full h-full bg-[url('/src/assets/paper-texture.png')] opacity-50 pointer-events-none rounded-lg" />
                     <h3 className="font-serif text-slate-800 text-2xl font-bold mb-6 relative z-10 border-b-2 border-slate-300 pb-2">Passport</h3>
@@ -256,7 +287,6 @@ export default function Home() {
         </AnimatePresence>
       </main>
 
-      {/* Footer Status */}
       <footer className="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent pointer-events-none flex justify-between items-end text-xs text-slate-500">
         <div>
            {(view !== 'summary' && view !== 'intro') && `Regions explored: ${completedRegions.length} / ${Object.keys(STORIES).length}`}
