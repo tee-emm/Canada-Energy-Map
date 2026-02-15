@@ -70,15 +70,6 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
-  .paper-texture {
-    background-image: url('/src/assets/paper-texture.png');
-    background-size: cover;
-    box-shadow: 
-      0 1px 1px rgba(0,0,0,0.1), 
-      0 10px 30px rgba(0,0,0,0.2),
-      inset 0 0 40px rgba(0,0,0,0.05);
-  }
-
   .animate-float {
     animation: float 6s ease-in-out infinite;
   }
