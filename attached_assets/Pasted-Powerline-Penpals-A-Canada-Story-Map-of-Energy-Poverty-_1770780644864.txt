@@ -2,7 +2,7 @@ Powerline Penpals: A Canada Story Map of Energy Poverty
 
 Format: Interactive story-map (web app) where each region is a “chapter” told through letters, with branching responses, a mini budget-tradeoff tool, and a shared impact meter that visualizes what you prioritized.
 
-You’re essentially building a playable anthology: four to six short narrative experiences that are different, but connected by the same UI language and decision system.
+It's essentially a playable anthology: four to six short narrative experiences that are different, but connected by the same UI language and decision system.
 
 The core loop
 1) Choose a region on a stylized map of Canada
@@ -115,7 +115,7 @@ Glossary tooltips are optional (“what is a delivery surcharge?”, “what is 
 
 Accessibility-first: keyboard navigation, reduced motion toggle, high-contrast mode, readable typography.
 
-Ending summary (your “thesis page”)
+Ending summary:
 
 After completing all regions:
 
