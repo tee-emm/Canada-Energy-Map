@@ -50,7 +50,7 @@ export const STORIES: Record<RegionId, Region> = {
   north: {
     id: 'north',
     name: 'North',
-    coordinates: { top: '45%', left: '58%' },
+    coordinates: { top: '65.5%', left: '48.8%' },
     themeColor: 'var(--color-primary)',
     budget: 500,
     letters: [
@@ -468,7 +468,7 @@ export const STORIES: Record<RegionId, Region> = {
   medical: {
     id: 'medical',
     name: 'Medical',
-    coordinates: { top: '91%', left: '76%' },
+    coordinates: { top: '92.3%', left: '75.2%' },
     themeColor: 'var(--color-chart-4)',
     budget: 600,
     letters: [

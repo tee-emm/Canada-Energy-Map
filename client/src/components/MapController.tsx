@@ -69,12 +69,13 @@ export function MapController({ onSelectRegion, completedRegions }: MapControlle
       setActiveRegion(null);
     }}>
        <div
-         className="relative w-full h-full max-w-[900px] max-h-[900px]"
+         className="relative"
          style={{
-           aspectRatio: '1 / 1',
+           width: 'min(90vw, 90vh)',
+           height: 'min(90vw, 90vh)',
          }}
        >
-          <div className="absolute inset-0 z-0 opacity-90 flex items-center justify-center p-4 sm:p-8">
+          <div className="absolute inset-0 z-0 opacity-90">
             <CanadaSVG className="w-full h-full" />
           </div>
 
