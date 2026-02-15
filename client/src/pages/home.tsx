@@ -83,152 +83,179 @@ export default function Home() {
   const currentBudget = currentRegion ? budgets[currentRegion.id] : 0;
 
   return (
-    <div className="h-screen w-screen bg-slate-950 text-slate-100 flex flex-col overflow-hidden font-sans">
-      <header className="fixed top-0 left-0 right-0 z-50 p-6 flex justify-between items-start pointer-events-none">
-        <div className="pointer-events-auto transition-opacity duration-500" style={{ opacity: view === 'intro' ? 0 : 1 }}>
-          <h1 className="text-2xl font-serif font-bold tracking-tight text-white flex items-center gap-2">
-            <span className="text-accent text-3xl">⚡</span>
-            Powerline Penpals
-          </h1>
-          <p className="text-slate-400 text-xs uppercase tracking-widest mt-1">A Canada Story Map of Energy Poverty</p>
-        </div>
-        
-        <div className="pointer-events-auto transition-opacity duration-500 flex items-start gap-4" style={{ opacity: (view === 'summary' || view === 'intro') ? 0 : 1 }}>
-           <ImpactMeter stats={stats} compact={true} className="w-64" />
-        </div>
-      </header>
-
-      <main className="flex-1 relative">
-        <AnimatePresence mode="wait">
-          {view === 'intro' && (
-             <motion.div
-               key="intro"
-               initial={{ opacity: 0 }}
-               animate={{ opacity: 1 }}
-               exit={{ opacity: 0, scale: 1.1, filter: 'blur(10px)' }}
-               transition={{ duration: 1.2 }}
-               className="relative w-full h-full flex items-center justify-center bg-slate-950"
-             >
-                <div className="absolute inset-0 z-0 opacity-30 flex items-center justify-center">
-                   <CanadaSVG className="w-[80%] h-[80%] max-w-[900px] blur-[2px]" />
-                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent" />
-                </div>
-
-                <div className="relative z-10 max-w-2xl text-center space-y-8 p-8">
-                   <motion.div
-                     initial={{ y: 20, opacity: 0 }}
-                     animate={{ y: 0, opacity: 1 }}
-                     transition={{ delay: 0.5, duration: 0.8 }}
-                   >
-                     <h1 className="text-6xl md:text-8xl font-serif font-bold tracking-tighter text-white mb-4 drop-shadow-2xl">
-                       Powerline<br/><span className="text-accent italic">Penpals</span>
-                     </h1>
-                     <div className="h-1 w-24 bg-accent mx-auto mb-6 rounded-full" />
-                   </motion.div>
-
-                   <motion.div
-                     className="grid grid-cols-3 gap-4 max-w-lg mx-auto mb-8 text-xs md:text-sm text-slate-400 font-mono tracking-wide"
-                     initial={{ opacity: 0 }}
-                     animate={{ opacity: 1 }}
-                     transition={{ delay: 0.7, duration: 0.8 }}
-                   >
-                      <div className="flex flex-col items-center gap-2">
-                         <span className="w-8 h-8 rounded-full border border-slate-600 flex items-center justify-center text-accent">1</span>
-                         <span>Select Region</span>
-                      </div>
-                      <div className="flex flex-col items-center gap-2">
-                         <span className="w-8 h-8 rounded-full border border-slate-600 flex items-center justify-center text-accent">2</span>
-                         <span>Make Choices</span>
-                      </div>
-                      <div className="flex flex-col items-center gap-2">
-                         <span className="w-8 h-8 rounded-full border border-slate-600 flex items-center justify-center text-accent">3</span>
-                         <span>Balance Impact</span>
-                      </div>
-                   </motion.div>
-
-                   <motion.p 
-                     className="text-xl md:text-2xl text-slate-300 font-light leading-relaxed max-w-lg mx-auto"
-                     initial={{ y: 20, opacity: 0 }}
-                     animate={{ y: 0, opacity: 1 }}
-                     transition={{ delay: 0.8, duration: 0.8 }}
-                   >
-                     When the grid fails, choices are all we have left.
-                     <br/><span className="text-sm text-slate-500 mt-4 block uppercase tracking-widest">An interactive anthology of energy poverty in Canada</span>
-                   </motion.p>
-
-                   <motion.div
-                     initial={{ y: 20, opacity: 0 }}
-                     animate={{ y: 0, opacity: 1 }}
-                     transition={{ delay: 1.5, duration: 0.8 }}
-                   >
-                     <Button 
-                       size="lg" 
-                       className="text-lg px-12 py-8 rounded-full bg-white text-slate-900 hover:bg-accent hover:text-white transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(255,200,100,0.5)]"
-                       onClick={() => setView('map')}
-                     >
-                       Begin Journey
-                     </Button>
-                   </motion.div>
-                </div>
-             </motion.div>
-          )}
-
-          {view === 'map' && (
-            <motion.div 
-              key="map"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0, scale: 1.1 }}
-              transition={{ duration: 0.8 }}
-              className="w-full h-full"
-            >
-              <MapController 
-                onSelectRegion={handleSelectRegion} 
-                completedRegions={completedRegions}
-              />
-            </motion.div>
-          )}
-
-          {view === 'letter' && currentRegion && currentLetter && (
-            <motion.div 
-              key="letter"
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 50 }}
-              className="absolute inset-0 z-20 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
-            >
-              <div className="w-full max-w-4xl pt-20 pb-10">
-                 <LetterInterface 
-                   key={currentLetter.id}
-                   letter={currentLetter}
-                   regionName={currentRegion.name}
-                   budget={currentBudget}
-                   startingBudget={currentRegion.budget}
-                   onChoice={(c) => {
-                     updateStats(c.impact);
-                     spendBudget(c.cost || 0);
-                   }}
-                   onWalletDecision={(opt) => {
-                     updateStats(opt.impact);
-                     spendBudget(opt.cost || 0);
-                   }}
-                   onComplete={handleLetterStepComplete}
-                 />
+    <div className="h-[100dvh] w-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
+      <AnimatePresence mode="wait">
+        {view === 'intro' && (
+           <motion.div
+             key="intro"
+             initial={{ opacity: 0 }}
+             animate={{ opacity: 1 }}
+             exit={{ opacity: 0, scale: 1.1, filter: 'blur(10px)' }}
+             transition={{ duration: 1.2 }}
+             className="relative w-full h-full flex items-center justify-center bg-slate-950 overflow-y-auto"
+           >
+              <div className="absolute inset-0 z-0 opacity-30 flex items-center justify-center">
+                 <CanadaSVG className="w-[80%] h-[80%] max-w-[900px] blur-[2px]" />
+                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent" />
               </div>
-            </motion.div>
-          )}
 
-          {view === 'summary' && (
-            <motion.div 
-               key="summary"
-               initial={{ opacity: 0 }}
-               animate={{ opacity: 1 }}
-               className="absolute inset-0 z-30 bg-slate-950 flex flex-col items-center justify-center p-8 overflow-y-auto"
-            >
-              <div className="max-w-4xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+              <div className="relative z-10 max-w-xl w-full text-center space-y-6 p-6 sm:p-8">
+                 <motion.div
+                   initial={{ y: 20, opacity: 0 }}
+                   animate={{ y: 0, opacity: 1 }}
+                   transition={{ delay: 0.5, duration: 0.8 }}
+                 >
+                   <h1 className="text-5xl sm:text-6xl md:text-8xl font-serif font-bold tracking-tighter text-white mb-3 drop-shadow-2xl">
+                     Powerline<br/><span className="text-accent italic">Penpals</span>
+                   </h1>
+                   <div className="h-1 w-20 bg-accent mx-auto mb-4 rounded-full" />
+                 </motion.div>
+
+                 <motion.div
+                   className="grid grid-cols-3 gap-3 max-w-sm mx-auto text-xs text-slate-400 font-mono tracking-wide"
+                   initial={{ opacity: 0 }}
+                   animate={{ opacity: 1 }}
+                   transition={{ delay: 0.7, duration: 0.8 }}
+                 >
+                    <div className="flex flex-col items-center gap-1.5">
+                       <span className="w-7 h-7 rounded-full border border-slate-600 flex items-center justify-center text-accent text-xs">1</span>
+                       <span>Select Region</span>
+                    </div>
+                    <div className="flex flex-col items-center gap-1.5">
+                       <span className="w-7 h-7 rounded-full border border-slate-600 flex items-center justify-center text-accent text-xs">2</span>
+                       <span>Make Choices</span>
+                    </div>
+                    <div className="flex flex-col items-center gap-1.5">
+                       <span className="w-7 h-7 rounded-full border border-slate-600 flex items-center justify-center text-accent text-xs">3</span>
+                       <span>Balance Impact</span>
+                    </div>
+                 </motion.div>
+
+                 <motion.p 
+                   className="text-lg sm:text-xl text-slate-300 font-light leading-relaxed max-w-md mx-auto"
+                   initial={{ y: 20, opacity: 0 }}
+                   animate={{ y: 0, opacity: 1 }}
+                   transition={{ delay: 0.8, duration: 0.8 }}
+                 >
+                   When the grid fails, choices are all we have left.
+                   <br/><span className="text-xs text-slate-500 mt-3 block uppercase tracking-widest">An interactive anthology of energy poverty in Canada</span>
+                 </motion.p>
+
+                 <motion.div
+                   initial={{ y: 20, opacity: 0 }}
+                   animate={{ y: 0, opacity: 1 }}
+                   transition={{ delay: 1.5, duration: 0.8 }}
+                 >
+                   <Button 
+                     data-testid="button-begin"
+                     size="lg" 
+                     className="text-base sm:text-lg px-10 py-6 sm:py-8 rounded-full bg-white text-slate-900 hover:bg-accent hover:text-white transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_30px_rgba(255,200,100,0.5)]"
+                     onClick={() => setView('map')}
+                   >
+                     Begin Journey
+                   </Button>
+                 </motion.div>
+              </div>
+           </motion.div>
+        )}
+
+        {view === 'map' && (
+          <motion.div 
+            key="map"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, scale: 1.1 }}
+            transition={{ duration: 0.8 }}
+            className="w-full h-full relative"
+          >
+            <header className="absolute top-0 left-0 right-0 z-30 p-3 sm:p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 bg-gradient-to-b from-slate-950 via-slate-950/80 to-transparent">
+              <div>
+                <h1 className="text-lg sm:text-xl font-serif font-bold tracking-tight text-white flex items-center gap-1.5">
+                  <span className="text-accent text-xl sm:text-2xl">&#9889;</span>
+                  Powerline Penpals
+                </h1>
+                <p className="text-slate-500 text-[10px] uppercase tracking-widest mt-0.5">A Canada Story Map of Energy Poverty</p>
+              </div>
+              
+              <div className="w-full sm:w-56">
+                <ImpactMeter stats={stats} compact={true} className="bg-transparent border-0 p-0" />
+              </div>
+            </header>
+
+            <MapController 
+              onSelectRegion={handleSelectRegion} 
+              completedRegions={completedRegions}
+            />
+
+            <footer className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-slate-950/80 to-transparent text-xs text-slate-500 text-center">
+              Regions explored: {completedRegions.length} / {Object.keys(STORIES).length}
+            </footer>
+          </motion.div>
+        )}
+
+        {view === 'letter' && currentRegion && currentLetter && (
+          <motion.div 
+            key="letter"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="w-full h-full flex flex-col bg-slate-950"
+          >
+            <header className="shrink-0 px-4 py-3 flex items-center justify-between border-b border-white/10 bg-slate-950">
+              <div className="flex items-center gap-2">
+                <button
+                  data-testid="button-back-to-map"
+                  onClick={() => { setView('map'); setCurrentRegion(null); setCurrentLetterId(null); }}
+                  className="text-xs text-slate-400 hover:text-white transition-colors flex items-center gap-1"
+                >
+                  <span>&larr;</span> Map
+                </button>
+                <span className="text-white/20">|</span>
+                <h1 className="text-sm font-serif font-bold text-white flex items-center gap-1.5">
+                  <span className="text-accent">&#9889;</span>
+                  {currentRegion.name}
+                </h1>
+              </div>
+              <div className="w-40 sm:w-52">
+                <ImpactMeter stats={stats} compact={true} className="bg-transparent border-0 p-0" />
+              </div>
+            </header>
+
+            <div className="flex-1 overflow-y-auto">
+              <div className="w-full px-4 py-6 sm:py-8">
+                <LetterInterface 
+                  key={currentLetter.id}
+                  letter={currentLetter}
+                  regionName={currentRegion.name}
+                  budget={currentBudget}
+                  startingBudget={currentRegion.budget}
+                  onChoice={(c) => {
+                    updateStats(c.impact);
+                    spendBudget(c.cost || 0);
+                  }}
+                  onWalletDecision={(opt) => {
+                    updateStats(opt.impact);
+                    spendBudget(opt.cost || 0);
+                  }}
+                  onComplete={handleLetterStepComplete}
+                />
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {view === 'summary' && (
+          <motion.div 
+             key="summary"
+             initial={{ opacity: 0 }}
+             animate={{ opacity: 1 }}
+             className="w-full h-full overflow-y-auto bg-slate-950"
+          >
+            <div className="max-w-4xl mx-auto px-4 py-8 sm:py-12">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
                  <div className="space-y-6">
-                    <h2 className="text-4xl font-serif font-bold text-white mb-2">Your Impact Profile</h2>
-                    <p className="text-slate-400 text-lg leading-relaxed">
+                    <h2 className="text-3xl sm:text-4xl font-serif font-bold text-white">Your Impact Profile</h2>
+                    <p className="text-slate-400 text-base sm:text-lg leading-relaxed">
                       Across Canada, you prioritized choices that balanced <strong className="text-accent">survival</strong> with <strong className="text-primary">dignity</strong>.
                     </p>
 
@@ -246,33 +273,32 @@ export default function Home() {
                       })}
                     </div>
                     
-                    <div className="py-8">
+                    <div className="py-4">
                        <ImpactMeter stats={stats} className="bg-transparent border-0 p-0" />
                     </div>
 
-                    <div className="flex gap-4">
-                      <Button onClick={() => window.location.reload()} size="lg" className="w-full">
+                    <div className="flex gap-3">
+                      <Button data-testid="button-restart" onClick={() => window.location.reload()} size="lg" className="w-full">
                         Restart Journey
                       </Button>
-                      <Button variant="outline" size="lg" className="w-full" onClick={() => alert("Thank you for playing.")}>
+                      <Button data-testid="button-share" variant="outline" size="lg" className="w-full" onClick={() => alert("Thank you for playing.")}>
                         Share Results
                       </Button>
                     </div>
                  </div>
 
-                 <div className="bg-[#f7f5f0] p-8 rounded-lg rotate-2 shadow-2xl relative">
-                    <div className="absolute top-0 left-0 w-full h-full bg-[url('/src/assets/paper-texture.png')] opacity-50 pointer-events-none rounded-lg" />
-                    <h3 className="font-serif text-slate-800 text-2xl font-bold mb-6 relative z-10 border-b-2 border-slate-300 pb-2">Passport</h3>
+                 <div className="bg-[#f7f5f0] p-6 sm:p-8 rounded-lg rotate-1 shadow-2xl relative">
+                    <h3 className="font-serif text-slate-800 text-xl sm:text-2xl font-bold mb-5 border-b-2 border-slate-300 pb-2">Passport</h3>
                     
-                    <div className="grid grid-cols-2 gap-4 relative z-10">
+                    <div className="grid grid-cols-2 gap-3 sm:gap-4">
                        {Object.values(STORIES).map((region) => (
-                         <div key={region.id} className="aspect-square border-2 border-slate-300 border-dashed rounded-lg flex items-center justify-center p-4">
+                         <div key={region.id} className="aspect-square border-2 border-slate-300 border-dashed rounded-lg flex items-center justify-center p-3">
                             {completedRegions.includes(region.id) ? (
                               <div className="text-center rotate-[-12deg]">
-                                <div className="w-16 h-16 rounded-full border-4 border-slate-800 flex items-center justify-center mb-2 mx-auto">
-                                   <span className="text-2xl font-bold text-slate-800">{region.name.slice(0,3).toUpperCase()}</span>
+                                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-4 border-slate-800 flex items-center justify-center mb-1.5 mx-auto">
+                                   <span className="text-lg sm:text-2xl font-bold text-slate-800">{region.name.slice(0,3).toUpperCase()}</span>
                                 </div>
-                                <span className="text-xs font-mono text-slate-500 uppercase tracking-widest">Verified</span>
+                                <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Verified</span>
                               </div>
                             ) : (
                               <span className="text-slate-300 text-sm italic">Empty</span>
@@ -282,16 +308,10 @@ export default function Home() {
                     </div>
                  </div>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </main>
-
-      <footer className="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent pointer-events-none flex justify-between items-end text-xs text-slate-500">
-        <div>
-           {(view !== 'summary' && view !== 'intro') && `Regions explored: ${completedRegions.length} / ${Object.keys(STORIES).length}`}
-        </div>
-      </footer>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
