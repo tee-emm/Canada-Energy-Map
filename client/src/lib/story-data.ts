@@ -50,7 +50,7 @@ export const STORIES: Record<RegionId, Region> = {
   north: {
     id: 'north',
     name: 'North',
-    coordinates: { top: '65.5%', left: '48.8%' },
+    coordinates: { top: '66.7%', left: '71.4%' },
     themeColor: 'var(--color-primary)',
     budget: 500,
     letters: [
@@ -329,7 +329,7 @@ export const STORIES: Record<RegionId, Region> = {
   city: {
     id: 'city',
     name: 'Urban',
-    coordinates: { top: '82.8%', left: '56.4%' },
+    coordinates: { top: '93.6%', left: '62.9%' },
     themeColor: 'var(--color-accent)',
     budget: 1300,
     letters: [
@@ -467,8 +467,8 @@ export const STORIES: Record<RegionId, Region> = {
 
   medical: {
     id: 'medical',
-    name: 'Medical',
-    coordinates: { top: '92.3%', left: '75.2%' },
+    name: 'Suburban',
+    coordinates: { top: '92.3%', left: '75.3%' },
     themeColor: 'var(--color-chart-4)',
     budget: 600,
     letters: [

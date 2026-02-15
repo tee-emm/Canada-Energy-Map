@@ -47,7 +47,7 @@ const PERSONAS: Record<RegionId, Persona> = {
     age: '28\u201340',
     avatar: '\uD83D\uDC68\u200D\uD83D\uDC66',
     location: 'Halifax, Nova Scotia',
-    challenge: 'Keeping his son cool and safe during heat waves in a basement unit with no AC',
+    challenge: 'Keeping his son cool and safe during heat waves in a suburban basement unit with no AC',
     quote: 'I want to be a responsible parent, and I don\u2019t want Carter\u2019s teachers to think I\u2019m neglecting him.',
   },
 };
