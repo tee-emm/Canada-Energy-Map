@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { MapController } from '@/components/MapController';
 import { LetterInterface } from '@/components/LetterInterface';
 import { ImpactMeter } from '@/components/ImpactMeter';
+import { RulesModal } from '@/components/RulesModal';
 import { Region, STORIES, RegionId } from '@/lib/story-data';
 import { Button } from '@/components/ui/button';
 import { CanadaSVG } from '@/components/CanadaSVG';
@@ -21,6 +22,7 @@ export default function Home() {
   const [completedRegions, setCompletedRegions] = useState<RegionId[]>([]);
   const [budgets, setBudgets] = useState<Record<RegionId, number>>(initialBudgets);
   
+  const [showRules, setShowRules] = useState(false);
   const [stats, setStats] = useState({
     warmth: 0,
     reliability: 0,
@@ -145,6 +147,7 @@ export default function Home() {
                    initial={{ y: 20, opacity: 0 }}
                    animate={{ y: 0, opacity: 1 }}
                    transition={{ delay: 1.5, duration: 0.8 }}
+                   className="flex flex-col items-center gap-3"
                  >
                    <Button 
                      data-testid="button-begin"
@@ -154,6 +157,13 @@ export default function Home() {
                    >
                      Begin Journey
                    </Button>
+                   <button
+                     data-testid="button-rules-intro"
+                     onClick={() => setShowRules(true)}
+                     className="text-xs text-slate-400 hover:text-white transition-colors underline underline-offset-4 decoration-slate-600 hover:decoration-white"
+                   >
+                     How to Play
+                   </button>
                  </motion.div>
               </div>
            </motion.div>
@@ -169,12 +179,22 @@ export default function Home() {
             className="w-full h-full relative"
           >
             <header className="absolute top-0 left-0 right-0 z-30 p-3 sm:p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 bg-gradient-to-b from-slate-950 via-slate-950/80 to-transparent">
-              <div>
-                <h1 className="text-lg sm:text-xl font-serif font-bold tracking-tight text-white flex items-center gap-1.5">
-                  <span className="text-accent text-xl sm:text-2xl">&#9889;</span>
-                  Powerline Penpals
-                </h1>
-                <p className="text-slate-500 text-[10px] uppercase tracking-widest mt-0.5">A Canada Story Map of Energy Poverty</p>
+              <div className="flex items-center gap-2">
+                <div>
+                  <h1 className="text-lg sm:text-xl font-serif font-bold tracking-tight text-white flex items-center gap-1.5">
+                    <span className="text-accent text-xl sm:text-2xl">&#9889;</span>
+                    Powerline Penpals
+                  </h1>
+                  <p className="text-slate-500 text-[10px] uppercase tracking-widest mt-0.5">A Canada Story Map of Energy Poverty</p>
+                </div>
+                <button
+                  data-testid="button-rules-map"
+                  onClick={() => setShowRules(true)}
+                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center text-white/60 hover:text-white transition-colors text-sm font-bold shrink-0"
+                  title="How to Play"
+                >
+                  ?
+                </button>
               </div>
               
               <div className="w-full sm:w-56">
@@ -215,6 +235,14 @@ export default function Home() {
                   <span className="text-accent">&#9889;</span>
                   {currentRegion.name}
                 </h1>
+                <button
+                  data-testid="button-rules-letter"
+                  onClick={() => setShowRules(true)}
+                  className="w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center text-white/50 hover:text-white transition-colors text-[10px] font-bold shrink-0"
+                  title="How to Play"
+                >
+                  ?
+                </button>
               </div>
               <div className="w-40 sm:w-52">
                 <ImpactMeter stats={stats} compact={true} className="bg-transparent border-0 p-0" />
@@ -312,6 +340,8 @@ export default function Home() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <RulesModal open={showRules} onClose={() => setShowRules(false)} />
     </div>
   );
 }
