@@ -37,6 +37,17 @@ export interface Letter {
   };
 }
 
+export interface ContextCard {
+  title: string;
+  text: string;
+  source: string;
+  sourceUrl: string;
+}
+
+export interface Takeaway {
+  text: string;
+}
+
 export interface Region {
   id: RegionId;
   name: string;
@@ -44,7 +55,22 @@ export interface Region {
   letters: Letter[];
   themeColor: string;
   budget: number;
+  contextCards: ContextCard[];
+  takeaways: Takeaway[];
 }
+
+export const ALL_SOURCES: { label: string; url: string }[] = [
+  { label: 'Canada Energy Regulator — Clean Energy in Remote Communities', url: 'https://www.cer-rec.gc.ca/en/data-analysis/energy-markets/market-snapshots/2023/market-snapshot-clean-energy-projects-remote-indigenous-northern-communities.html' },
+  { label: 'Wataynikaneyap Power — Grid Connection Update', url: 'https://www.wataypower.ca/updates/wataynikaneyap-power-completes-construction-of-the-line-that-brings-light' },
+  { label: 'Natural Resources Canada — Northern and Remote Communities', url: 'https://natural-resources.canada.ca/science-data/science-research/research-centres/northern-indigenous-rural-remote-communities' },
+  { label: 'Statistics Canada — Energy Poverty in Canada', url: 'https://www150.statcan.gc.ca/n1/pub/46-28-0001/2024001/article/00001-eng.htm' },
+  { label: 'Canada Energy Regulator — Fuel Poverty Across Canada', url: 'https://www.cer-rec.gc.ca/en/data-analysis/energy-markets/market-snapshots/2017/market-snapshot-fuel-poverty-across-canada-lower-energy-efficiency-in-lower-income-households.html' },
+  { label: 'CMHC — Canadian Housing Survey', url: 'https://www.cmhc-schl.gc.ca/observer/2024/2022-canadian-housing-survey' },
+  { label: 'Efficiency Canada — Energy Poverty in Canada', url: 'https://www.efficiencycanada.org/energy-poverty-in-canada/' },
+  { label: 'Canadian Red Cross — Power Outages', url: 'https://www.redcross.ca/how-we-help/emergencies-and-disasters-in-canada/types-of-emergencies/power-outages' },
+  { label: 'Government of Canada — How to Prepare for Power Outages', url: 'https://www.canada.ca/en/services/policing/emergencies/preparedness/get-prepared/hazards-emergencies/power-outages/how-prepare.html' },
+  { label: 'Hydro One — Life Support Notification', url: 'https://www.hydroone.com/power-outages-and-safety/life-support-notification' },
+];
 
 export const STORIES: Record<RegionId, Region> = {
   north: {
@@ -53,6 +79,16 @@ export const STORIES: Record<RegionId, Region> = {
     coordinates: { top: '66.7%', left: '71.4%' },
     themeColor: 'var(--color-primary)',
     budget: 500,
+    contextCards: [
+      { title: 'Why power is fragile here', text: 'Many remote and northern communities in Canada are not connected to the main electricity grid and rely on local diesel generators, making power expensive and vulnerable to fuel delivery delays.', source: 'Canada Energy Regulator', sourceUrl: 'https://www.cer-rec.gc.ca/en/data-analysis/energy-markets/market-snapshots/2023/market-snapshot-clean-energy-projects-remote-indigenous-northern-communities.html' },
+      { title: 'What grid connection can change', text: 'Indigenous-led grid connection projects have reduced diesel use and improved reliability in some communities, but they take years of planning, funding, and community decision-making.', source: 'Wataynikaneyap Power', sourceUrl: 'https://www.wataypower.ca/updates/wataynikaneyap-power-completes-construction-of-the-line-that-brings-light' },
+      { title: 'Why diesel is still used', text: 'Diesel remains common in remote areas because of geography, distance, and the high cost of building transmission lines.', source: 'Natural Resources Canada', sourceUrl: 'https://natural-resources.canada.ca/science-data/science-research/research-centres/northern-indigenous-rural-remote-communities' },
+    ],
+    takeaways: [
+      { text: 'Remote communities often have no choice but to ration power — it is not a personal failing, but a structural gap.' },
+      { text: 'Youth like Lusa bear invisible costs: delayed education, lost opportunities, and emotional exhaustion.' },
+      { text: 'Grid expansion projects exist, but they take years. In the meantime, communities innovate with what they have.' },
+    ],
     letters: [
       {
         id: 'n1',
@@ -195,6 +231,16 @@ export const STORIES: Record<RegionId, Region> = {
     coordinates: { top: '80.2%', left: '42.8%' },
     themeColor: 'var(--color-chart-3)',
     budget: 900,
+    contextCards: [
+      { title: 'What energy poverty means', text: 'A household is often considered energy poor if it spends 10% or more of its after-tax income on home energy bills.', source: 'Statistics Canada', sourceUrl: 'https://www150.statcan.gc.ca/n1/pub/46-28-0001/2024001/article/00001-eng.htm' },
+      { title: 'Why rural households are hit harder', text: 'Energy poverty rates are higher in some rural and colder regions due to older housing, higher heating needs, and fewer efficiency upgrades.', source: 'Canada Energy Regulator', sourceUrl: 'https://www.cer-rec.gc.ca/en/data-analysis/energy-markets/market-snapshots/2017/market-snapshot-fuel-poverty-across-canada-lower-energy-efficiency-in-lower-income-households.html' },
+      { title: 'Housing condition matters', text: 'Older or poorly insulated homes require more energy to stay warm, increasing costs even when households try to conserve.', source: 'CMHC', sourceUrl: 'https://www.cmhc-schl.gc.ca/observer/2024/2022-canadian-housing-survey' },
+    ],
+    takeaways: [
+      { text: 'Seniors on fixed incomes are especially vulnerable when energy costs spike — there is no room in the budget to absorb the shock.' },
+      { text: 'Choosing between heat and food is not hypothetical for many rural Canadians. It is a monthly calculation.' },
+      { text: 'Aging housing stock creates a compounding problem: the worse the home, the more energy it wastes, and the less the occupant can afford to fix it.' },
+    ],
     letters: [
       {
         id: 'r1',
@@ -332,6 +378,16 @@ export const STORIES: Record<RegionId, Region> = {
     coordinates: { top: '93.6%', left: '62.9%' },
     themeColor: 'var(--color-accent)',
     budget: 1300,
+    contextCards: [
+      { title: 'Renters and energy burden', text: 'Energy poverty is influenced by housing quality and lack of control over upgrades, which can increase costs for renters.', source: 'Efficiency Canada', sourceUrl: 'https://www.efficiencycanada.org/energy-poverty-in-canada/' },
+      { title: 'How energy poverty is measured', text: 'Different thresholds, such as 6% or 10% of income spent on energy, change how many households are considered energy poor.', source: 'Statistics Canada', sourceUrl: 'https://www150.statcan.gc.ca/n1/pub/46-28-0001/2024001/article/00001-eng.htm' },
+      { title: 'Outages in high-rise buildings', text: 'In high-rise buildings, outages can disable elevators, heating, refrigeration, and medical equipment simultaneously.', source: 'Canadian Red Cross', sourceUrl: 'https://www.redcross.ca/how-we-help/emergencies-and-disasters-in-canada/types-of-emergencies/power-outages' },
+    ],
+    takeaways: [
+      { text: 'Renters often cannot control the quality of their housing or electrical systems — yet they bear the consequences of failure.' },
+      { text: 'Medical dependency on electricity turns every outage into a potential emergency, adding invisible stress to daily life.' },
+      { text: 'Falling behind on utility bills can start a cycle that is very difficult to escape, especially when essential costs keep rising.' },
+    ],
     letters: [
       {
         id: 'u1',
@@ -471,6 +527,16 @@ export const STORIES: Record<RegionId, Region> = {
     coordinates: { top: '92.3%', left: '75.3%' },
     themeColor: 'var(--color-chart-4)',
     budget: 600,
+    contextCards: [
+      { title: 'Outages as medical emergencies', text: 'Power outages can be dangerous for households that rely on electrically powered medical devices or temperature control.', source: 'Government of Canada', sourceUrl: 'https://www.canada.ca/en/services/policing/emergencies/preparedness/get-prepared/hazards-emergencies/power-outages/how-prepare.html' },
+      { title: 'Backup power planning', text: 'Utilities recommend backup power plans for customers who depend on life-support equipment.', source: 'Hydro One', sourceUrl: 'https://www.hydroone.com/power-outages-and-safety/life-support-notification' },
+      { title: 'Emergency preparedness kits', text: 'Emergency guidance recommends planning for at least 72 hours without power, including lighting, communication, and medical needs.', source: 'Canadian Red Cross', sourceUrl: 'https://www.redcross.ca/how-we-help/emergencies-and-disasters-in-canada/types-of-emergencies/power-outages' },
+    ],
+    takeaways: [
+      { text: 'Parents like Levi carry the weight of energy poverty silently — the shame of not being able to provide basic comfort is real.' },
+      { text: 'Energy poverty is not just a winter problem. Summer heat waves can be equally dangerous, especially for children and the elderly.' },
+      { text: 'Understanding energy poverty as a systemic issue rather than a personal failure is the first step toward meaningful change.' },
+    ],
     letters: [
       {
         id: 'm1',

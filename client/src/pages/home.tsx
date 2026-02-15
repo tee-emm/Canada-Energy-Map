@@ -4,9 +4,11 @@ import { MapController } from '@/components/MapController';
 import { LetterInterface } from '@/components/LetterInterface';
 import { ImpactMeter } from '@/components/ImpactMeter';
 import { RulesModal } from '@/components/RulesModal';
-import { Region, STORIES, RegionId } from '@/lib/story-data';
+import { Region, STORIES, RegionId, ALL_SOURCES } from '@/lib/story-data';
 import { Button } from '@/components/ui/button';
 import { CanadaSVG } from '@/components/CanadaSVG';
+import { ContextCardDisplay } from '@/components/ContextCardDisplay';
+import { TakeawayDisplay } from '@/components/TakeawayDisplay';
 
 const initialBudgets: Record<RegionId, number> = {
   north: STORIES.north.budget,
@@ -17,6 +19,7 @@ const initialBudgets: Record<RegionId, number> = {
 
 export default function Home() {
   const [view, setView] = useState<'intro' | 'map' | 'letter' | 'summary'>('intro');
+  const [letterPhase, setLetterPhase] = useState<'context' | 'letters' | 'takeaway'>('context');
   const [currentRegion, setCurrentRegion] = useState<Region | null>(null);
   const [currentLetterId, setCurrentLetterId] = useState<string | null>(null);
   const [completedRegions, setCompletedRegions] = useState<RegionId[]>([]);
@@ -33,6 +36,7 @@ export default function Home() {
   const handleSelectRegion = (region: Region) => {
     setCurrentRegion(region);
     setCurrentLetterId(region.letters[0].id);
+    setLetterPhase('context');
     setView('letter');
   };
 
@@ -57,7 +61,7 @@ export default function Home() {
     if (nextId) {
        setCurrentLetterId(nextId);
     } else {
-       handleRegionComplete();
+       setLetterPhase('takeaway');
     }
   };
 
@@ -207,13 +211,13 @@ export default function Home() {
               completedRegions={completedRegions}
             />
 
-            <footer className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-slate-950/80 to-transparent text-xs text-slate-500 text-center">
+            <footer className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 bg-gradient-to-t from-slate-950 via-slate-950/90 to-transparent text-xs text-slate-500 text-center z-30">
               Regions explored: {completedRegions.length} / {Object.keys(STORIES).length}
             </footer>
           </motion.div>
         )}
 
-        {view === 'letter' && currentRegion && currentLetter && (
+        {view === 'letter' && currentRegion && (
           <motion.div 
             key="letter"
             initial={{ opacity: 0 }}
@@ -251,22 +255,46 @@ export default function Home() {
 
             <div className="flex-1 overflow-y-auto">
               <div className="w-full px-4 py-6 sm:py-8">
-                <LetterInterface 
-                  key={currentLetter.id}
-                  letter={currentLetter}
-                  regionName={currentRegion.name}
-                  budget={currentBudget}
-                  startingBudget={currentRegion.budget}
-                  onChoice={(c) => {
-                    updateStats(c.impact);
-                    spendBudget(c.cost || 0);
-                  }}
-                  onWalletDecision={(opt) => {
-                    updateStats(opt.impact);
-                    spendBudget(opt.cost || 0);
-                  }}
-                  onComplete={handleLetterStepComplete}
-                />
+                <AnimatePresence mode="wait">
+                  {letterPhase === 'context' && (
+                    <motion.div key="context" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                      <ContextCardDisplay
+                        region={currentRegion}
+                        onContinue={() => setLetterPhase('letters')}
+                      />
+                    </motion.div>
+                  )}
+
+                  {letterPhase === 'letters' && currentLetter && (
+                    <motion.div key={`letter-${currentLetter.id}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                      <LetterInterface 
+                        key={currentLetter.id}
+                        letter={currentLetter}
+                        regionName={currentRegion.name}
+                        budget={currentBudget}
+                        startingBudget={currentRegion.budget}
+                        onChoice={(c) => {
+                          updateStats(c.impact);
+                          spendBudget(c.cost || 0);
+                        }}
+                        onWalletDecision={(opt) => {
+                          updateStats(opt.impact);
+                          spendBudget(opt.cost || 0);
+                        }}
+                        onComplete={handleLetterStepComplete}
+                      />
+                    </motion.div>
+                  )}
+
+                  {letterPhase === 'takeaway' && (
+                    <motion.div key="takeaway" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                      <TakeawayDisplay
+                        region={currentRegion}
+                        onContinue={handleRegionComplete}
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
           </motion.div>
@@ -335,6 +363,23 @@ export default function Home() {
                        ))}
                     </div>
                  </div>
+              </div>
+
+              <div className="mt-12 border-t border-white/10 pt-8">
+                <h3 className="text-sm font-mono uppercase tracking-widest text-slate-500 mb-4">Sources &amp; References</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2">
+                  {ALL_SOURCES.map((source, i) => (
+                    <a
+                      key={i}
+                      href={source.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs text-slate-500 hover:text-primary transition-colors py-1 truncate block"
+                    >
+                      {source.label} &#8599;
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
           </motion.div>

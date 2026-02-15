@@ -12,9 +12,11 @@ interface WarmthWalletProps {
 export function WarmthWallet({ event, onSelect, budget }: WarmthWalletProps) {
   return (
     <motion.div 
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="p-4 sm:p-5 bg-slate-900 border-t-4 border-accent rounded-lg"
+      initial={{ opacity: 0, y: 20, scaleY: 0.95 }}
+      animate={{ opacity: 1, y: 0, scaleY: 1 }}
+      transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+      style={{ transformOrigin: 'bottom center' }}
+      className="p-4 sm:p-5 bg-slate-900 border-b-4 border-accent rounded-lg"
     >
       <div className="flex items-center justify-between mb-2">
         <h3 className="font-mono text-accent text-xs uppercase tracking-widest">Warmth Wallet</h3>

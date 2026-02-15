@@ -76,6 +76,22 @@ export function LetterInterface({ letter, onChoice, onWalletDecision, onComplete
           </div>
         </div>
 
+        <AnimatePresence>
+          {phase === 'wallet' && letter.walletEvent && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ type: 'spring', stiffness: 200, damping: 25 }}
+              className="overflow-hidden"
+            >
+              <div className="px-5 py-4 sm:px-8 sm:py-5 md:px-10 md:py-5">
+                <WarmthWallet event={letter.walletEvent} onSelect={handleWallet} budget={budget} />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         <div className="border-t border-slate-200 px-5 py-4 sm:px-8 sm:py-6 md:px-10 md:py-6 bg-[#f5f3ee]">
           <AnimatePresence mode="wait">
             {phase === 'reading' && (
@@ -131,13 +147,14 @@ export function LetterInterface({ letter, onChoice, onWalletDecision, onComplete
               </motion.div>
             )}
 
-            {phase === 'wallet' && letter.walletEvent && (
-              <motion.div
-                initial={{ opacity: 0 }}
+            {phase === 'wallet' && (
+              <motion.div 
+                initial={{ opacity: 0 }} 
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
+                className="flex flex-col items-center justify-center gap-2 py-3"
               >
-                <WarmthWallet event={letter.walletEvent} onSelect={handleWallet} budget={budget} />
+                <p className="text-xs text-slate-500 font-sans uppercase tracking-wide">Make your budget decision above</p>
               </motion.div>
             )}
 

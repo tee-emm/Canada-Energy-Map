@@ -20,7 +20,7 @@ interface Persona {
 const PERSONAS: Record<RegionId, Persona> = {
   north: {
     name: 'Lusa',
-    age: '16\u201319',
+    age: '17',
     avatar: '\uD83D\uDCDA',
     location: 'Iqaluit, Nunavut',
     challenge: 'Finishing school while rationing one hour of power a day in a remote community',
@@ -28,7 +28,7 @@ const PERSONAS: Record<RegionId, Persona> = {
   },
   city: {
     name: 'Vihaan',
-    age: '22\u201335',
+    age: '25',
     avatar: '\uD83C\uDFE2',
     location: 'Toronto, Ontario',
     challenge: 'Keeping his mom\u2019s medical device running through building outages and rising arrears',
@@ -36,7 +36,7 @@ const PERSONAS: Record<RegionId, Persona> = {
   },
   rural: {
     name: 'Mary',
-    age: '70\u201385',
+    age: '70',
     avatar: '\uD83C\uDFE0',
     location: 'Rural Saskatchewan',
     challenge: 'Choosing between heat and groceries as bills spike in an aging home',
@@ -44,7 +44,7 @@ const PERSONAS: Record<RegionId, Persona> = {
   },
   medical: {
     name: 'Levi',
-    age: '28\u201340',
+    age: '38',
     avatar: '\uD83D\uDC68\u200D\uD83D\uDC66',
     location: 'Halifax, Nova Scotia',
     challenge: 'Keeping his son cool and safe during heat waves in a suburban basement unit with no AC',
@@ -200,7 +200,7 @@ export function MapController({ onSelectRegion, completedRegions }: MapControlle
          }}
        />
        
-       <div className="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 text-white/50 text-xs sm:text-sm font-light z-20 text-center px-4">
+       <div className="absolute bottom-10 sm:bottom-12 left-1/2 -translate-x-1/2 text-white/50 text-xs sm:text-sm font-light z-20 text-center px-4">
           <p data-testid="text-map-instructions">Tap a region to meet someone. Tap again to begin their story.</p>
        </div>
     </div>
