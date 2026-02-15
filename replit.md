@@ -33,7 +33,7 @@ Preferred communication style: Simple, everyday language.
 - **Dev server**: Vite dev server integrated as middleware with HMR via `server/vite.ts`
 
 ### Data Layer
-- **Story Data**: Defined as TypeScript objects in `client/src/lib/story-data.ts`. Four regions (north, city, rural, medical), each with letters, choices, wallet events, and impact values.
+- **Story Data**: Defined as TypeScript objects in `client/src/lib/story-data.ts`. Four regions (north, city, rural, suburban), each with letters, choices, wallet events, and impact values.
 - **Database**: PostgreSQL configured via Drizzle ORM (`drizzle.config.ts`), but the schema (`shared/schema.ts`) currently only has a Zod impact schema — no Drizzle table definitions yet. The database is provisioned but essentially unused.
 - **Storage**: `server/storage.ts` has an empty `MemStorage` class — storage interface is a stub ready for implementation.
 - **Schema management**: `drizzle-kit push` for database migrations when tables are added.
@@ -53,7 +53,6 @@ Preferred communication style: Simple, everyday language.
 
 ### Infrastructure
 - **PostgreSQL**: Database provisioned via `DATABASE_URL` environment variable, managed with Drizzle ORM and drizzle-kit. Currently has no tables defined.
-- **Replit**: Platform-specific plugins for dev banner, cartographer, runtime error overlay, and meta images. These only activate in development on Replit.
 
 ### Key NPM Packages
 - **framer-motion**: Core animation library for all UI transitions
@@ -61,10 +60,8 @@ Preferred communication style: Simple, everyday language.
 - **@tanstack/react-query**: Server state management (available but lightly used)
 - **drizzle-orm / drizzle-zod**: ORM and schema validation (configured but minimal usage)
 - **shadcn/ui ecosystem**: Radix UI primitives, class-variance-authority, tailwind-merge, clsx
-- **react-day-picker, embla-carousel-react, recharts, react-resizable-panels, vaul, input-otp, cmdk**: UI component dependencies from shadcn/ui (many not actively used in the current app)
 - **connect-pg-simple / express-session**: Session management (available but not currently wired up)
 
 ### Static Assets
-- Canada SVG map loaded from `/canada-map.svg` in the public directory
-- Paper texture PNG used for letter backgrounds
+- Canada SVG map loaded from `/canada-map.svg` in the public directory (licensed from simplemaps.com)
 - Google Fonts: Caveat, Inter, Lora loaded via CDN
