@@ -45,7 +45,7 @@ export function WarmthWallet({ event, onSelect, budget }: WarmthWalletProps) {
               )}
             >
               <div className="flex items-start justify-between gap-2 w-full">
-                <span className={cn("font-medium text-sm leading-snug transition-colors", canAfford && "group-hover:text-accent")}>
+                <span className={cn("font-medium text-sm leading-snug transition-colors text-white/90", canAfford && "group-hover:text-accent")}>
                   {option.label}
                 </span>
                 <span className={cn(
